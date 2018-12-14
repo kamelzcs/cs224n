@@ -29,17 +29,19 @@ def softmax(x):
     orig_shape = x.shape
 
     if len(x.shape) > 1:
-        n, d = x.shape
-        # Matrix
-        ### YOUR CODE HERE
-        raise NotImplementedError
-        ### END YOUR CODE
+        max_x = np.max(x, axis=1)
+        x = x - max_x[:, None]
+        exp_array = np.exp(x)
+        total_sum = np.dot(exp_array, np.ones(x.shape[1]))
+        return exp_array / total_sum[:, None]
     else:
-        expArray = np.exp(x)
-        totalSum = np.dot(expArray, np.transpose(np.ones_like(x)))
+        max_x = np.max(x)
+        x = x - max_x
+        exp_array = np.exp(x)
+        total_sum = np.dot(exp_array, np.ones_like(x))
+        return exp_array / total_sum
 
     assert x.shape == orig_shape
-    return expArray / totalSum
 
 
 def test_softmax_basic():
