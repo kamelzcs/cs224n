@@ -30,10 +30,10 @@ def softmax(x):
 
     if len(x.shape) > 1:
         max_x = np.max(x, axis=1)
-        x = x - max_x[:, None]
+        x = x - max_x.reshape(x.shape[0], 1)
         exp_array = np.exp(x)
         total_sum = np.dot(exp_array, np.ones(x.shape[1]))
-        return exp_array / total_sum[:, None]
+        return exp_array / total_sum.reshape((total_sum.shape[0], 1))
     else:
         max_x = np.max(x)
         x = x - max_x
