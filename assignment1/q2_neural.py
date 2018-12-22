@@ -39,12 +39,20 @@ def forward_backward_prop(X, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     # Note: compute cost based on `sum` not `mean`.
-    ### YOUR CODE HERE: forward propagation
-    raise NotImplementedError
-    ### END YOUR CODE
+    h1 = np.dot(X, W1) + b1
+    a1 = sigmoid(h1)
+    h2 = np.dot(a1, W2) + b2
+    yhat = softmax(h2)
+    cost = np.sum(-np.log(yhat[labels == 1]))
 
     ### YOUR CODE HERE: backward propagation
-    raise NotImplementedError
+    gradh2 = yhat - labels
+    gradW2 = a1.T.dot(gradh2)
+    gradb2 = np.sum(gradh2, axis=0)
+    grada1 = gradh2.dot(W2.T)
+    gradh1 = grada1 * sigmoid_grad(a1)
+    gradW1 = X.T.dot(gradh1)
+    gradb1 = np.sum(gradh1, axis=0)
     ### END YOUR CODE
 
     ### Stack gradients (do not modify)
